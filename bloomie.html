@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloomie AI - Bloom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a5af9;
+            --primary-light: #8a7dfa;
+            --primary-dark: #4b3df7;
+            --secondary: #d66efd;
+            --secondary-light: #e592ff;
+            --accent: #00d9ff;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f8faff;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 30px rgba(106, 90, 249, 0.15);
+            --radius: 16px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e6f0ff 0%, #ffd6e7 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .back-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 42px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .bloomie-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+            animation: pulse 2s infinite;
+            overflow: hidden;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .chatbot-header h2 {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .chatbot-header p {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: #f0f4ff;
+            border-bottom-left-radius: 5px;
+            color: #333;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f0f4ff;
+            border-radius: 18px;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            max-width: 85%;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #a855f7;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #f8faff;
+            border-radius: 25px;
+            border: 2px solid #e6e6ff;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .suggested-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .suggestion-chip {
+            background: #f0f4ff;
+            border: 1px solid #d6e0ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-chip:hover {
+            background: #e6eeff;
+            transform: translateY(-2px);
+        }
+
+        .disclaimer {
+            font-size: 11px;
+            color: #888;
+            text-align: center;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+
+            <div class="header">
+                <h1><i class="fas fa-robot"></i> Bloomie AI</h1>
+                <p>Your AI assistant for natural remedies and wellness</p>
+            </div>
+
+            <div class="chatbot-container">
+                <div class="chatbot-header">
+                    <div class="bloomie-avatar">
+                        <i class="fas fa-robot" style="font-size: 40px; color: white;"></i>
+                    </div>
+                    <h2>Bloomie</h2>
+                    <p>Your AI assistant for natural remedies and wellness</p>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        Hello! I'm Bloomie, your friendly AI assistant. I specialize in providing natural remedies and wellness tips. What health concern can I help you with today?
+                    </div>
+                </div>
+
+                <div class="suggested-questions">
+                    <div class="suggestion-chip" onclick="askQuestion('What are natural remedies for headaches?')">
+                        Headache remedies
+                    </div>
+                    <div class="suggestion-chip" onclick="askQuestion('How can I improve my sleep naturally?')">
+                        Better sleep
+                    </div>
+                    <div class="suggestion-chip" onclick="askQuestion('What helps with digestive issues?')">
+                        Digestive issues
+                    </div>
+                    <div class="suggestion-chip" onclick="askQuestion('Natural ways to reduce stress?')">
+                        Reduce stress
+                    </div>
+                </div>
+
+                <div class="disclaimer">
+                    Note: These are natural remedy suggestions. For serious health concerns, please consult a healthcare professional.
+                </div>
+
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Ask about natural remedies...">
+                    <button class="send-button" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "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";
+        const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        const MODEL_NAME = "llama-3.1-8b-instant";
+
+        let conversation = [
+            {
+                role: "system",
+                content: "You are Bloomie, a helpful and empathetic AI assistant specializing in natural remedies and wellness. You provide gentle, natural solutions for common health concerns. You focus on herbal remedies, lifestyle changes, dietary adjustments, and natural approaches. You always remind users to consult healthcare professionals for serious conditions. You are warm, encouraging, and practical in your advice."
+            }
+        ];
+
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            messageDiv.textContent = text;
+           
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+           
+            const dotsDiv = document.createElement('div');
+            dotsDiv.className = 'typing-dots';
+           
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'typing-dot';
+                dotsDiv.appendChild(dot);
+            }
+           
+            typingDiv.appendChild(dotsDiv);
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const message = chatInput.value.trim();
+           
+            if (message) {
+                addMessage(message, 'user');
+                chatInput.value = '';
+                showTypingIndicator();
+
+                conversation.push({ role: "user", content: message });
+
+                try {
+                    const res = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${API_KEY}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: MODEL_NAME,
+                            messages: conversation,
+                            temperature: 0.7,
+                            max_tokens: 500
+                        })
+                    });
+
+                    const data = await res.json();
+                    hideTypingIndicator();
+
+                    let reply = "I'm sorry, I couldn't generate a response at the moment. Please try again.";
+
+                    if (data.choices && data.choices.length > 0) {
+                        reply = data.choices[0].message.content.trim();
+                        conversation.push({ role: "assistant", content: reply });
+                    } else if (data.error) {
+                        reply = `I'm experiencing a technical issue: ${data.error.message}`;
+                    }
+
+                    addMessage(reply, 'bot');
+
+                } catch (err) {
+                    hideTypingIndicator();
+                    addMessage("I'm having trouble connecting right now. Please check your internet connection and try again.", 'bot');
+                    conversation.pop();
+                }
+            }
+        }
+
+        function askQuestion(question) {
+            addMessage(question, 'user');
+            showTypingIndicator();
+           
+            conversation.push({ role: "user", content: question });
+
+            fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: MODEL_NAME,
+                    messages: conversation,
+                    temperature: 0.7,
+                    max_tokens: 500
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                hideTypingIndicator();
+               
+                let reply = "I'm sorry, I couldn't generate a response at the moment. Please try again.";
+
+                if (data.choices && data.choices.length > 0) {
+                    reply = data.choices[0].message.content.trim();
+                    conversation.push({ role: "assistant", content: reply });
+                } else if (data.error) {
+                    reply = `I'm experiencing a technical issue: ${data.error.message}`;
+                }
+
+                addMessage(reply, 'bot');
+            })
+            .catch(err => {
+                hideTypingIndicator();
+                addMessage("I'm having trouble connecting right now. Please check your internet connection and try again.", 'bot');
+                conversation.pop();
+            });
+        }
+
+        // Allow pressing Enter to send message
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

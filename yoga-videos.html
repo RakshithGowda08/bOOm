@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prenatal Yoga Videos - Bloom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e6f0ff 0%, #ffd6e7 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-thumbnail iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .video-info p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            color: #888;
+            font-size: 0.8em;
+        }
+
+        .duration {
+            background: #a855f7;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .difficulty {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .difficulty.beginner { background: #4CAF50; color: white; }
+        .difficulty.intermediate { background: #FF9800; color: white; }
+        .difficulty.advanced { background: #f44336; color: white; }
+
+        .back-btn {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: transform 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧘‍♀️ Prenatal Yoga Videos</h1>
+            <p>Choose from our curated collection of prenatal yoga sessions</p>
+        </div>
+
+        <div class="videos-grid" id="videosGrid">
+            <!-- Videos will be loaded here -->
+        </div>
+
+        <button class="back-btn" onclick="window.close()">
+            <i class="fas fa-arrow-left"></i> Back to Bloom
+        </button>
+    </div>
+
+    <script>
+        const yogaVideos = [
+            {
+                id: 'abc123',
+                title: 'Gentle Morning Yoga for Pregnancy',
+                videoId: '_NP6u3TWlBE',
+                description: 'Start your day with this gentle 15-minute yoga flow designed for all trimesters.',
+                duration: '15 min',
+                difficulty: 'beginner'
+            },
+            {
+                id: 'def456',
+                title: 'Pregnancy Yoga for Back Pain Relief',
+                videoId: 'YOUR_SECOND_VIDEO_ID',
+                description: 'Relieve back pain and improve posture with these targeted yoga poses.',
+                duration: '20 min',
+                difficulty: 'beginner'
+            },
+            {
+                id: 'ghi789',
+                title: 'Third Trimester Yoga & Breathing',
+                videoId: 'YOUR_THIRD_VIDEO_ID',
+                description: 'Prepare for labor with breathing techniques and gentle movements for late pregnancy.',
+                duration: '25 min',
+                difficulty: 'intermediate'
+            },
+            {
+                id: 'jkl012',
+                title: 'Prenatal Yoga for Better Sleep',
+                videoId: 'YOUR_FOURTH_VIDEO_ID',
+                description: 'Evening routine to relax your body and mind for restful sleep during pregnancy.',
+                duration: '18 min',
+                difficulty: 'beginner'
+            },
+            {
+                id: 'mno345',
+                title: 'Strength & Flexibility for Pregnancy',
+                videoId: 'YOUR_FIFTH_VIDEO_ID',
+                description: 'Build strength and maintain flexibility with this comprehensive prenatal workout.',
+                duration: '30 min',
+                difficulty: 'intermediate'
+            },
+            {
+                id: 'pqr678',
+                title: 'Quick 10-Minute Pregnancy Yoga',
+                videoId: 'YOUR_SIXTH_VIDEO_ID',
+                description: 'Perfect for busy days - a quick but effective yoga session for expecting mothers.',
+                duration: '10 min',
+                difficulty: 'beginner'
+            }
+        ];
+
+        function loadVideos() {
+            const grid = document.getElementById('videosGrid');
+            
+            grid.innerHTML = yogaVideos.map(video => `
+                <div class="video-card" onclick="playVideo('${video.videoId}')">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg" 
+                             alt="${video.title}" 
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-play" style="color: white; font-size: 3em; opacity: 0.8;"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>${video.title}</h3>
+                        <p>${video.description}</p>
+                        <div class="video-meta">
+                            <span class="duration">${video.duration}</span>
+                            <span class="difficulty ${video.difficulty}">${video.difficulty}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playVideo(videoId) {
+            // Open video in a new tab or embed in current page
+            window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+            
+            // Alternative: Open in same tab with embedded player
+            // window.location.href = `video-player.html?video=${videoId}`;
+        }
+
+        // Load videos when page loads
+        document.addEventListener('DOMContentLoaded', loadVideos);
+    </script>
+</body>
+</html>

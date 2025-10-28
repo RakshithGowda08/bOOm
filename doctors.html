@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Doctor - Pregnancy Care</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6a5af9;
+            --primary-light: #8a7dfa;
+            --primary-dark: #4b3df7;
+            --secondary: #d66efd;
+            --secondary-light: #e592ff;
+            --accent: #00d9ff;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f8faff;
+            --bg-white: #ffffff;
+            --shadow: 0 10px 30px rgba(106, 90, 249, 0.15);
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8f0ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .doctor-card {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(106, 90, 249, 0.1);
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(106, 90, 249, 0.2);
+        }
+
+        .doctor-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3em;
+        }
+
+        .doctor-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .doctor-specialty {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .doctor-info {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .doctor-contact {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .appointment-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(106, 90, 249, 0.3);
+            width: 100%;
+        }
+
+        .appointment-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(106, 90, 249, 0.4);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .doctors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="header">
+                <h1><i class="fas fa-user-md"></i> Find a Pregnancy Specialist</h1>
+                <p>Connect with experienced obstetricians and gynecologists for personalized pregnancy care</p>
+            </div>
+
+            <div class="doctors-grid">
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Sarah Johnson</h3>
+                    <div class="doctor-specialty">Obstetrician & Gynecologist</div>
+                    <div class="doctor-info">
+                        <p>15+ years of experience in prenatal care and high-risk pregnancies. Specializes in natural birth methods.</p>
+                        <p><strong>Hospital:</strong> City General Hospital</p>
+                    </div>
+                    <div class="doctor-contact">
+                        <button class="contact-btn">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="contact-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button class="contact-btn">
+                            <i class="fas fa-video"></i>
+                        </button>
+                    </div>
+                    <button class="appointment-btn">Book Appointment</button>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Michael Chen</h3>
+                    <div class="doctor-specialty">Maternal-Fetal Medicine Specialist</div>
+                    <div class="doctor-info">
+                        <p>Expert in managing high-risk pregnancies and fetal complications. 12 years of specialized experience.</p>
+                        <p><strong>Hospital:</strong> University Medical Center</p>
+                    </div>
+                    <div class="doctor-contact">
+                        <button class="contact-btn">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="contact-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button class="contact-btn">
+                            <i class="fas fa-video"></i>
+                        </button>
+                    </div>
+                    <button class="appointment-btn">Book Appointment</button>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Emily Rodriguez</h3>
+                    <div class="doctor-specialty">Obstetrician & Reproductive Endocrinologist</div>
+                    <div class="doctor-info">
+                        <p>Specializes in fertility treatments and early pregnancy care. 10 years of clinical practice.</p>
+                        <p><strong>Hospital:</strong> Women's Health Center</p>
+                    </div>
+                    <div class="doctor-contact">
+                        <button class="contact-btn">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="contact-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button class="contact-btn">
+                            <i class="fas fa-video"></i>
+                        </button>
+                    </div>
+                    <button class="appointment-btn">Book Appointment</button>
+                </div>
+            </div>
+
+            <a href="pregnancy.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Pregnancy Page
+            </a>
+        </div>
+    </div>
+</body>
+</html>
